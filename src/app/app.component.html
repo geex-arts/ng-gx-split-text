@@ -1,8 +1,13 @@
+<section class="split-text">
+  <h1 class="split-text__title">ng-gx-split-text-demo</h1>
+  <div class="split-text__cards">
+    <app-card class="split-text__card" *ngFor="let card of cards"
+              #card_component
+              [cardName]="card.name"
+              [cardText]="card.text">
 
-<p #text_one ngGxSplitText>
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-  Adipisci amet animi aut consequuntur corporis, ea eius illum
-  impedit laborum molestias necessitatibus porro possimus praesentium
-  quibusdam quod, sapiente sunt, ullam vel.</p>
+    </app-card>
+  </div>
+</section>
 
 

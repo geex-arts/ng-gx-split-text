@@ -1,0 +1,31 @@
+
+<div class="split-text__progress" #split_text_progress></div>
+  <h2 class="split-text__card-title">{{cardName}}</h2>
+  <p class="split-text__text" #text ngGxSplitText>{{cardText}}</p>
+  <div class="split-text__controls">
+    <div class="split-text__buttons">
+      <button class="split-text__btn split-text__btn_play"
+              (click)="textPlayAnimation();">Play
+      </button>
+      <button class="split-text__btn split-text__btn_pause"
+              [class.split-text__btn_pause_active]="textPause"
+              (click)="textPauseAnimation();">Pause
+      </button>
+      <button class="split-text__btn split-text__btn_reverse"
+              [class.split-text__btn_reverse_active]="textReverse"
+              (click)="textReverseAnimation();">Reverse
+      </button>
+      <button class="split-text__btn split-text__btn_reset"
+              (click)="textResetAnimation();">Reset
+      </button>
+    </div>
+    <div class="split-text__toggles">
+      <span>Slow Motion</span>
+      <div class="split-text__toggle"
+           [class.split-text__toggle_active]="textSlowMotion"
+           (click)="textSlowMoAnimation();">
+        <div class="split-text__toggle-inner"></div>
+      </div>
+    </div>
+  </div>
+
