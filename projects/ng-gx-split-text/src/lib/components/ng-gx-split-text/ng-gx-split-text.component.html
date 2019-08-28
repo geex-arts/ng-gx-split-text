@@ -1,12 +1,10 @@
 <span #split_text_word
-      [style.will-change]="willChange"
       *ngFor="let word of wordsOfChars; let i = index"
       [style.display]="word[0] == ' ' ? 'inline' : 'inline-block'"
       [ngClass]="word[0] == ' ' ? ['split-text-space'] : ['split-text-word']">
     <span #split_text_char
           *ngFor="let char of wordsOfChars[i]"
           style="display: inherit;"
-          [style.will-change]="willChange"
           class="split-text-char">
       {{char}}
     </span>
