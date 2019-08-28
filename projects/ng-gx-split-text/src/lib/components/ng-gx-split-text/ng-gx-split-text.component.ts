@@ -1,58 +1,39 @@
-import {AfterViewInit, Component, ElementRef, Input, OnInit, QueryList, ViewChildren} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Options } from '../../models/options';
+import { fromEvent } from 'rxjs';
 
-// TODO: lib-ng-gx-split-text or ng-gx-split-text
 @Component({
-  selector: 'lib-ng-gx-split-text',
+  selector: 'ng-gx-split-text',
   templateUrl: './ng-gx-split-text.component.html',
   styleUrls: ['./ng-gx-split-text.component.scss']
 })
+
 export class NgGxSplitTextComponent implements OnInit, AfterViewInit {
   @Input() textContent: string;
-  @Input() willChange: string;
-  @Input() wordsOfChars: string[][];
+  @Input() options: Options;
 
-  @ViewChildren('split_text_word') splitTextWord = new QueryList<ElementRef>();
-  @ViewChildren('split_text_char') splitTextChar = new QueryList<ElementRef>();
+  willChange: string;
+  wordsOfChars: string[][];
 
-  // splitTextItem = {
-  // TODO: add types
-  words = [];
-  chars = [];
-  lineWords = [];
-  lineChars = [];
+  @ViewChildren('split_text_word') splitTextWord = new QueryList<ElementRef<HTMLElement>>();
+  @ViewChildren('split_text_char') splitTextChar = new QueryList<ElementRef<HTMLElement>>();
 
-  // };
+  words: HTMLElement[] = [];
+  chars: HTMLElement[] = [];
+  lineWords: HTMLElement[] = [];
+  lineChars: HTMLElement[] = [];
 
   constructor() {
   }
 
   ngOnInit(): void {
-    console.log('ngOnInit', this.textContent);
+    this.willChange = this.options.willChange.join(', ');
     this.wordsOfChars = this.createTextArray(this.textContent);
-    // this.words = this.splitTextWord.map(word => word.nativeElement);
-    // this.chars = this.splitTextChar.map(char => char.nativeElement);
-
-    // TODO: make immutable
-    // this.lineWords = this.getLine(this.words);
-    // this.getLine(this.words, this.lineWords);
-    // this.lineChars = this.getLine(this.chars);
-    // this.getLine(this.chars, this.lineChars);
   }
 
-
-  // TODO: Add updating lines on resize
-
   ngAfterViewInit(): void {
-    console.log('ngAfterViewInit', this.textContent);
-    // this.wordsOfChars = this.createTextArray(this.textContent);
-    this.words = this.splitTextWord.map(word => word.nativeElement);
-    this.chars = this.splitTextChar.map(char => char.nativeElement);
-    //
-    // // TODO: make immutable
-    // // this.lineWords = this.getLine(this.words);
-    this.getLine(this.words, this.lineWords);
-    // // this.lineChars = this.getLine(this.chars);
-    this.getLine(this.chars, this.lineChars);
+    this.setElements();
+    this.updateOnResize();
   }
 
   createTextArray(textContent: string): string[][] {
@@ -74,8 +55,8 @@ export class NgGxSplitTextComponent implements OnInit, AfterViewInit {
     return textWithSpaces.map(item => item.split(''));
   }
 
-
-  getLine(elements, lineElements) {
+  getLine(elements) {
+    const lineElements = [];
     let line = [];
     let lineIndex = 0;
 
@@ -95,8 +76,23 @@ export class NgGxSplitTextComponent implements OnInit, AfterViewInit {
         line = [];
         line.push(el);
       }
-
     });
+
+    return lineElements;
+  }
+
+  updateOnResize() {
+    fromEvent<UIEvent>(window, 'resize')
+      .subscribe(() => {
+        this.setElements();
+      });
+  }
+
+  setElements() {
+    this.words = this.splitTextWord.map(word => word.nativeElement);
+    this.chars = this.splitTextChar.map(char => char.nativeElement);
+    this.lineWords = this.getLine(this.words);
+    this.lineChars = this.getLine(this.chars);
   }
 
 }
