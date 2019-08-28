@@ -1,96 +1,40 @@
-import {
-  AfterContentChecked,
-  AfterViewInit,
-  ComponentFactoryResolver,
-  ComponentRef,
-  Directive,
-  ElementRef,
-  Input,
-  OnInit,
-  Renderer2,
-  ViewContainerRef
-} from '@angular/core';
+import { AfterContentChecked, AfterViewInit, ComponentFactoryResolver, ComponentRef, Directive, ElementRef, Input, OnInit, Renderer2, ViewContainerRef } from '@angular/core';
 import { NgGxSplitTextComponent } from '../components/ng-gx-split-text/ng-gx-split-text.component';
-import { hasOwnProperty } from 'tslint/lib/utils';
-import { log } from 'util';
-
-export interface NgGxSplitTextOptions {
-  willChange?: string[];
-  counter?: number;
-}
-
-export const ngGxSplitTextDefaultOptions: NgGxSplitTextOptions = {
-  willChange: ['transform'],
-  counter: 10,
-};
-
-const objectProto = Object.prototype;
-
-const hasOwnProperty = objectProto.hasOwnProperty;
-
-function eq(value, other) {
-  return value === other || (value !== value && other !== other);
-}
-
-function defaults(object, ...sources) {
-  object = Object(object);
-  sources.forEach((source) => {
-    if (source != null) {
-      source = Object(source);
-      for (const key in source) {
-        if (source.hasOwnProperty(key)) {
-          const value = object[key];
-          if (value === undefined ||
-            (eq(value, objectProto[key]) && !hasOwnProperty.call(object, key))) {
-            object[key] = source[key];
-          }
-        }
-      }
-    }
-  });
-  return object;
-}
-
-
+import { defaults } from '../utils/defaults/defaults';
+import { Options } from '../models/options';
+import { defaultOptions } from '../models/default-options';
 
 @Directive({
-  // tslint:disable-next-line:directive-selector
   selector: '[ngGxSplitText], ngGxSplitText'
 })
+
 export class NgGxSplitTextDirective implements OnInit, AfterViewInit, AfterContentChecked {
-  // TODO Add options (will change)
+  @Input('ngGxSplitText') options: Options;
 
-  @Input('ngGxSplitText') ngGxSplitTextOptions: NgGxSplitTextOptions;
-
-  @Input() private defer = false;
-  private src: string;
+  private srcTextContent: string;
   private init = false;
-  private ref: ComponentRef<NgGxSplitTextComponent>;
-  objectProto = Object.prototype;
+  private componentRef: ComponentRef<NgGxSplitTextComponent>;
+  private currentOptions: Options;
 
-  // TODO: ElementRef TYPE
   constructor(
-    private splitTextTarget: ElementRef,
+    private el: ElementRef<HTMLElement>,
     private componentFactoryResolver: ComponentFactoryResolver,
     private viewContainerRef: ViewContainerRef,
     private renderer: Renderer2
-  ) {
-    const a = defaults(this.ngGxSplitTextOptions, ngGxSplitTextDefaultOptions);
-    console.log(a, 1111);
-  }
+  ) {}
 
   ngOnInit(): void {
+    this.setCurrentOptions();
   }
 
   ngAfterViewInit(): void {
-    if (!this.defer) {
+    if (!this.currentOptions.defer) {
       this.initSplit();
     }
   }
 
   ngAfterContentChecked(): void {
     // TODO: add structure directive
-    // console.log('ngAfterContentChecked', this.);
   }
 
   public initSplit() {
@@ -98,87 +42,79 @@ export class NgGxSplitTextDirective implements OnInit, AfterViewInit, AfterConte
       console.warn('Warning!');
       return;
     }
-
     this.init = true;
     this.saveSrcText();
-    this.createSplitTextComponent(this.splitTextTarget.nativeElement.textContent);
+    this.createSplitTextComponent(this.el.nativeElement.textContent);
   }
 
   private saveSrcText() {
-    this.src = this.splitTextTarget.nativeElement.textContent;
+    this.srcTextContent = this.el.nativeElement.textContent;
   }
 
-  // TODO: move to component
-
   private createSplitTextComponent(textContent) {
+    this.el.nativeElement.innerHTML = '';
 
-    this.splitTextTarget.nativeElement.innerHTML = '';
-    // this.viewContainerRef.clear();
     const factory = this.componentFactoryResolver.resolveComponentFactory(NgGxSplitTextComponent);
-    const ref = this.viewContainerRef.createComponent(factory);
+    const componentRef = this.viewContainerRef.createComponent(factory);
 
-    this.renderer.appendChild(this.splitTextTarget.nativeElement, ref.location.nativeElement);
+    this.renderer.appendChild(this.el.nativeElement, componentRef.location.nativeElement);
 
-    ref.instance.textContent = textContent;
-    // ref.instance.willChange = this.ngGxSplitTextCurrentOptions.willChange.join(', ');
-    ref.changeDetectorRef.detectChanges();
+    componentRef.instance.textContent = textContent;
+    componentRef.instance.options = this.currentOptions;
+    componentRef.changeDetectorRef.detectChanges();
 
-    this.ref = ref;
+    this.componentRef = componentRef;
   }
 
   public get words() {
-    if (!this.ref) {
+    if (!this.componentRef) {
       return;
     }
-    return this.ref.instance.words;
+    return this.componentRef.instance.words;
   }
 
   public get lineWords() {
-    if (!this.ref) {
+    if (!this.componentRef) {
       return;
     }
-    return this.ref.instance.lineWords;
+    return this.componentRef.instance.lineWords;
   }
 
   public get chars() {
-    if (!this.ref) {
+    if (!this.componentRef) {
       return;
     }
-    return this.ref.instance.chars;
+    return this.componentRef.instance.chars;
   }
 
   public get lineChars() {
-    if (!this.ref) {
+    if (!this.componentRef) {
       return;
     }
-    return this.ref.instance.lineChars;
+    return this.componentRef.instance.lineChars;
   }
 
   public get nativeElement() {
-    return this.splitTextTarget.nativeElement;
+    return this.el.nativeElement;
   }
 
   public get srcText() {
-    return this.src;
+    return this.srcTextContent;
   }
 
   public get isInit() {
     return this.init;
   }
 
-  resetWillChange() {
-    if (!this.ref) {
+  public resetWillChange() {
+    if (!this.componentRef) {
       return;
     }
-    this.words.forEach((word, index) => {
-      word.style.willChange = 'auto';
-    });
-    this.chars.forEach((char, index) => {
-      char.style.willChange = 'auto';
-    });
+    this.words.forEach(word => word.style.willChange = 'auto');
+    this.chars.forEach(char => char.style.willChange = 'auto');
   }
 
-
-  // TODO: Add reset
-
+  setCurrentOptions() {
+    this.currentOptions = defaults(this.options, defaultOptions);
+  }
 }
