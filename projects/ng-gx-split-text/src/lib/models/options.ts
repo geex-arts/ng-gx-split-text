@@ -1,4 +1,4 @@
 export interface Options {
-  willChange?: string[];
+  // willChange?: string[];
   defer?: boolean;
 }

@@ -12,7 +12,7 @@ export class NgGxSplitTextComponent implements OnInit, AfterViewInit {
   @Input() textContent: string;
   @Input() options: Options;
 
-  willChange: string;
+  // willChange: string;
   wordsOfChars: string[][];
 
   @ViewChildren('split_text_word') splitTextWord = new QueryList<ElementRef<HTMLElement>>();
@@ -27,7 +27,7 @@ export class NgGxSplitTextComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.willChange = this.options.willChange.join(', ');
+    // this.willChange = this.options.willChange.join(', ');
     this.wordsOfChars = this.createTextArray(this.textContent);
   }
 

@@ -106,13 +106,13 @@ export class NgGxSplitTextDirective implements OnInit, AfterViewInit, AfterConte
     return this.init;
   }
 
-  public resetWillChange() {
-    if (!this.componentRef) {
-      return;
-    }
-    this.words.forEach(word => word.style.willChange = 'auto');
-    this.chars.forEach(char => char.style.willChange = 'auto');
-  }
+  // public resetWillChange() {
+  //   if (!this.componentRef) {
+  //     return;
+  //   }
+  //   this.words.forEach(word => word.style.willChange = 'auto');
+  //   this.chars.forEach(char => char.style.willChange = 'auto');
+  // }
 
   setCurrentOptions() {
     this.currentOptions = defaults(this.options, defaultOptions);
