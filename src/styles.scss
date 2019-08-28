@@ -50,11 +50,54 @@ body {
   transform-origin: 0 50%;
 }
 
+.split-text__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.split-text__card-title {
+  display: inline-block;
+}
+.split-text__align {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.split-text__align-item {
+  margin-left: 5px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  user-select: none;
+  cursor: pointer;
+
+}
+
+.split-text__align-item_active {
+  background-color: #2B50ED;
+  box-shadow: 0 12px 30px 0 rgba(43, 80, 237, 0.10);
+  color: #ffffff;
+
+}
+
 .split-text__text {
   text-align: justify;
   margin: 0 0 60px 0;
   line-height: 22px;
   color: rgba(#000000, 0.5);
+}
+.split-text__text_left {
+  text-align: left;
+}
+.split-text__text_center {
+  text-align: center;
+}
+.split-text__text_right {
+  text-align: right;
+}
+.split-text__text_justify {
+  text-align: justify;
 }
 
 .split-text__controls {

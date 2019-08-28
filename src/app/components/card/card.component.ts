@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { TimelineMax } from 'gsap';
 import { NgGxSplitTextDirective } from '../../../../projects/ng-gx-split-text/src/lib/directives/ng-gx-split-text.directive';
 
@@ -14,14 +14,24 @@ export class CardComponent implements OnInit, AfterViewInit {
   @ViewChild('text', {static: true, read: NgGxSplitTextDirective}) text: NgGxSplitTextDirective;
   @ViewChild('split_text_progress', {static: true}) splitTextProgress: ElementRef<HTMLElement>;
 
+  @ViewChildren('split_text_align_item') splitTextAlignItem = new QueryList<ElementRef<HTMLElement>>();
+
   tlText = new TimelineMax({
     onUpdate: () => {
       this.splitTextProgress.nativeElement.style.transform = `scaleX(${this.tlText.progress()})`;
     }
   });
+
   textReverse = false;
   textSlowMotion = false;
   textPause = true;
+
+  aligns = ['Left', 'Center', 'Right', 'Justify'];
+  currentAlignIndex = 3;
+
+  get currentAlign() {
+    return this.aligns[this.currentAlignIndex];
+  }
 
   constructor(private cd: ChangeDetectorRef) {
   }
@@ -30,6 +40,17 @@ export class CardComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+  }
+
+  chooseAlign(i) {
+    this.currentAlignIndex = i;
+    this.splitTextAlignItem.forEach((item, index) => {
+      if (i === index) {
+        item.nativeElement.classList.add('split-text__align-item_active');
+      } else {
+        item.nativeElement.classList.remove('split-text__align-item_active');
+      }
+    });
   }
 
   textPlayAnimation() {

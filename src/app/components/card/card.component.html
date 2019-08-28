@@ -1,7 +1,24 @@
 
 <div class="split-text__progress" #split_text_progress></div>
+<div class="split-text__header">
   <h2 class="split-text__card-title">{{cardName}}</h2>
-  <p class="split-text__text" #text ngGxSplitText>{{cardText}}</p>
+  <div class="split-text__align">
+    <span #split_text_align_item
+          class="split-text__align-item"
+          [class.split-text__align-item_active]="i === 3"
+          *ngFor="let align of aligns; let i = index;"
+
+          (click)="chooseAlign(i)"
+    >{{align}}</span>
+  </div>
+</div>
+<!--[ngClass]="['split-text__text_' + currentAlign?.align]"-->
+  <p class="split-text__text" #text
+
+     [class.split-text__text_left]="currentAlignIndex === 0"
+     [class.split-text__text_center]="currentAlignIndex === 1"
+     [class.split-text__text_right]="currentAlignIndex === 2"
+     [class.split-text__text_justify]="currentAlignIndex === 3" ngGxSplitText>{{cardText}}</p>
   <div class="split-text__controls">
     <div class="split-text__buttons">
       <button class="split-text__btn split-text__btn_play"
