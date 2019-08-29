@@ -1,27 +1,151 @@
-# NgGxSplitTextDemo
+![GX](https://i.ibb.co/NjW67P4/gx.png)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.2.
+![Split Text](https://media.giphy.com/media/MXL08fzkAr19LqhYNT/giphy.gif) 
 
-## Development server
+**NG-GX-SPLIT-TEXT** - This is a utility for Angular, allowing you to split the text into words and chars, for subsequent animation  
+  
+You can familiarize yourself with the demo version at the link - [DEMO](https://geex-arts.github.io/ng-gx-split-text/demo/)  
+  
+## Versions  
+  
+| Angular        | ng-gx-split-text |  
+|----------------|------------------|  
+|>=8.0.0  <9.0.0 | v0.0.1           |
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Features
 
-## Code scaffolding
+- [x] Split into chars
+- [x] Split into words
+- [x] Split into line-chars
+- [x] Split into line-words
+- [x] Defer init  
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+## Getting started
+### Step 1: Install `ng-gx-split-text`:
+```shell
+npm install ng-gx-split-text
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+### Step 2: Import the NgGxSplitTextModule:
+```js
+import { NgGxSplitTextModule } from 'ng-gx-split-text';
 
-## Running unit tests
+@NgModule({
+  declarations: [
+    AppComponent,
+  ],
+  imports: [
+    NgGxSplitTextModule,
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Step 3: Add a directive and template variable (example: #text) to the text you want to split:
+```html
+<p #text ngGxSplitText>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus amet consequuntur culpa
+  delectus, doloribus exercitationem ipsam, laudantium molestiae non numquam odit omnis optio praesentium quae ratione
+  similique sit soluta voluptatem?</p>
+```
 
-## Running end-to-end tests
+### Step 3: Find template variable in your component using @ViewChild():
+```js
+  @ViewChild('text', {static: true, read: NgGxSplitTextDirective}) text: NgGxSplitTextDirective;
+```
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+### Step 4: Animate text with [GSAP](https://greensock.com/gsap/):
+```js
+export class AppComponent implements AfterViewInit {
+  
+  @ViewChild('text', {static: true, read: NgGxSplitTextDirective}) text: NgGxSplitTextDirective;
+  
+  tlText = new TimelineMax();
+  
+  constructor() {}
+  
+ ngAfterViewInit(): void {
+    this.textAnimation();
+  }
 
-## Further help
+  textAnimation() {
+    this.tlText
+      .to(this.text.words, 0.5, {
+        opacity: 0,
+      })
+      .staggerFromTo(this.text.words, 0.5, {
+        opacity: 0,
+        x: () => {
+          return _.random(-100, 100);
+        },
+        y: () => {
+          return _.random(-100, 100);
+        },
+        rotation: () => {
+          return _.random(-25, 25);
+        },
+        immediateRender: false,
+      }, {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        rotation: 0,
+      }, 0.03);
+  }
+}
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+### Example: [DEMO](https://geex-arts.github.io/ng-gx-split-text/demo/) 
+
+
+## API
+### Directives
+| Name           |  Description |
+| ------------- | ------------- |
+| NgGxSplitText | Add Split Text for your text (all `options` is default) |
+| [NgGxSplitText] | Add Split Text for your text (custom `options`)|
+
+### Options
+| Name           | Type | Default | Description |
+| ------------- | ------------- | ------------- | ------------- |
+| defer | `boolean` | `false` |  Defer initiation (for manual initiation use `initSplit()`) |
+
+#### Example:
+```html
+<p #text ngGxSplitText>Lorem ipsum dolor...</p> // Default options
+<p #text [ngGxSplitText]="{defer: true, ...}">Lorem ipsum dolor...</p> // Custom options
+```
+
+```js
+ngAfterViewInit(): void {
+    // if Split Text already initialized (defer: false)
+    this.text.initSplit(); // Return WARNING! Text already initialized
+    
+    // if Split Text not initialized (defer: true)
+    this.text.initSplit(); // It's OK!
+  }
+```
+---
+### Properties
+| Name           | Type   | Description |
+| ------------- | ------------- | ------------- |
+| isInit | `boolean`| Return init status  |
+| nativeElement | `HTMLElement` | Return nativeElement |
+| words | `HTMLElement[]` | Return words array |
+| chars | `HTMLElement[]` | Return chars array |
+| line-words | `HTMLElement[][]` | Return line array with words array |
+| line-chars | `HTMLElement[][]` | Return line array with chars array |
+
+### Methods
+| Name           | Description |
+| ------------- | ------------- |
+| initSplit() |  Initialize Split Text (It will work if you select `defer: true`) |
+| resetSplit() |  Reset to source text |
+
+
+#### Example: 
+```js
+this.text.isInit // console.log(true);
+this.text.srcText // console.log(Lorem ipsum dolor...);
+```
