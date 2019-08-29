@@ -7,7 +7,6 @@
 You can familiarize yourself with the demo version at the link - [DEMO](https://geex-arts.github.io/ng-gx-split-text/demo/)  
   
 ## Versions  
-  
 | Angular        | ng-gx-split-text |  
 |----------------|------------------|  
 |>=8.0.0  <9.0.0 | v0.0.1           |
@@ -95,9 +94,7 @@ export class AppComponent implements AfterViewInit {
   }
 }
 ```
-
-### Example: [DEMO](https://geex-arts.github.io/ng-gx-split-text/demo/) 
-
+#[DEMO](https://geex-arts.github.io/ng-gx-split-text/demo/) 
 
 ## API
 ### Directives
@@ -117,16 +114,6 @@ export class AppComponent implements AfterViewInit {
 <p #text [ngGxSplitText]="{defer: true, ...}">Lorem ipsum dolor...</p> // Custom options
 ```
 
-```js
-ngAfterViewInit(): void {
-    // if Split Text already initialized (defer: false)
-    this.text.initSplit(); // Return WARNING! Text already initialized
-    
-    // if Split Text not initialized (defer: true)
-    this.text.initSplit(); // It's OK!
-  }
-```
----
 ### Properties
 | Name           | Type   | Description |
 | ------------- | ------------- | ------------- |
@@ -137,15 +124,25 @@ ngAfterViewInit(): void {
 | line-words | `HTMLElement[][]` | Return line array with words array |
 | line-chars | `HTMLElement[][]` | Return line array with chars array |
 
+#### Example: 
+```js
+this.text.isInit // console.log(true);
+this.text.srcText // console.log(Lorem ipsum dolor...);
+```
+
 ### Methods
 | Name           | Description |
 | ------------- | ------------- |
 | initSplit() |  Initialize Split Text (It will work if you select `defer: true`) |
 | resetSplit() |  Reset to source text |
 
-
-#### Example: 
+#### Example:
 ```js
-this.text.isInit // console.log(true);
-this.text.srcText // console.log(Lorem ipsum dolor...);
+ngAfterViewInit(): void {
+    // if Split Text already initialized (defer: false)
+    this.text.initSplit(); // Return WARNING! Text already initialized
+    
+    // if Split Text not initialized (defer: true)
+    this.text.initSplit(); // It's OK!
+  }
 ```
