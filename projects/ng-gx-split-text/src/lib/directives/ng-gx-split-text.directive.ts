@@ -39,7 +39,7 @@ export class NgGxSplitTextDirective implements OnInit, AfterViewInit, AfterConte
 
   public initSplit() {
     if (this.init) {
-      console.warn('Warning!');
+      console.warn('Warning! Text is already initialized');
       return;
     }
     this.init = true;
