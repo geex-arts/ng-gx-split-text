@@ -106,6 +106,13 @@ export class NgGxSplitTextDirective implements OnInit, AfterViewInit, AfterConte
     return this.init;
   }
 
+  public resetSplit() {
+    if (!this.componentRef) {
+      return;
+    }
+    this.nativeElement.innerHTML = this.srcText;
+  }
+
   // public resetWillChange() {
   //   if (!this.componentRef) {
   //     return;
