@@ -4,6 +4,19 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+.github {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-image: url('./assets/github.svg');
+  position: fixed;
+  top: 30px;
+  right: 30px;
+}
+
 .split-text {
   height: 100vh;
   width: 100%;
