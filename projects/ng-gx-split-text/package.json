@@ -1,6 +1,45 @@
 {
   "name": "ng-gx-split-text",
+  "description": "This is a utility for Angular, allowing you to split the text into words and chars, for subsequent animation",
   "version": "0.0.1",
+  "author": {
+    "name": "Yan Merkushin",
+    "email": "MerkushinYan@gmail.com",
+    "url": "https://github.com/Yanduz"
+  },
+  "contributors": [
+    {
+      "name": "Denis Kildishev",
+      "email": "denis@kildishev.ru",
+      "url": "https://github.com/f1nality"
+    }
+  ],
+  "bugs": "https://github.com/geex-arts/ng-gx-split-text/issues",
+  "homepage": "https://github.com/geex-arts/ng-gx-split-text",
+  "license": "MIT",
+  "keywords": [
+    "split",
+    "split text",
+    "split-text",
+    "text animation",
+    "gsap",
+    "animation",
+    "animations",
+    "text split",
+    "text-split",
+    "text",
+    "angular",
+    "ng",
+    "ng-gx-split-text",
+    "chars-animation",
+    "words-animation",
+    "module",
+    "utility"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/geex-arts/ng-gx-split-text.git"
+  },
   "peerDependencies": {
     "@angular/common": "^8.2.0",
     "@angular/core": "^8.2.0"
