@@ -3,6 +3,7 @@ import { Back } from 'gsap';
 import { cards } from './stubs/cards';
 import * as _ from 'lodash';
 import { CardComponent } from './components/card/card.component';
+import { TimelineMax } from 'gsap';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,9 @@ export class AppComponent implements AfterViewInit {
   @ViewChildren('card_component', {read: CardComponent}) cardComponent = new QueryList<CardComponent>();
 
   cards = cards;
-  constructor() {}
+
+  constructor() {
+  }
 
 
   ngAfterViewInit(): void {
@@ -23,6 +26,8 @@ export class AppComponent implements AfterViewInit {
   initAnimations() {
     this.textOneInitAnimation();
     this.textTwoInitAnimation();
+    this.textThreeInitAnimation();
+    this.textFourInitAnimation();
   }
 
   textOneInitAnimation() {
@@ -74,6 +79,51 @@ export class AppComponent implements AfterViewInit {
         y: 0,
         rotation: 0,
       }, 0.03).pause();
+  }
+
+  textThreeInitAnimation() {
+    const text = this.cardComponent.toArray()[2].text;
+    const tlText = this.cardComponent.toArray()[2].tlText;
+    const multiply = 0.65;
+
+
+    text.lineChars.forEach((chars, index) => {
+      tlText
+        .add(
+          new TimelineMax()
+            .staggerFrom(chars, 0.8 * multiply, {
+              opacity: 0,
+              x: 10,
+              y: 30,
+              rotation: -10,
+              skewX: 30,
+              ease: Back.easeOut.config(5),
+            }, 0.025 * multiply, '+=0'),
+          index * 0.1 * Math.pow(1.1, (index + 1)) * multiply
+        ).pause();
+    });
+  }
+
+  textFourInitAnimation() {
+    const text = this.cardComponent.toArray()[3].text;
+    const tlText = this.cardComponent.toArray()[3].tlText;
+    const multiply = 2;
+
+
+    text.lineWords.forEach((words, index) => {
+      tlText
+        .add(
+          new TimelineMax()
+            .from(words, 0.8 * multiply, {
+              opacity: 0,
+              x: 130,
+              y: 0,
+              skewX: -20,
+              ease: Back.easeOut.config(5),
+            }, 0.025 * multiply),
+          index * 0.1 * Math.pow(0.9, (index + 1)) * multiply
+        ).pause();
+    });
   }
 
 
