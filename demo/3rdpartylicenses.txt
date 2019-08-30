@@ -110,6 +110,7 @@ terms above.
 
 
 ng-gx-split-text
+MIT
 
 rxjs
 Apache-2.0
