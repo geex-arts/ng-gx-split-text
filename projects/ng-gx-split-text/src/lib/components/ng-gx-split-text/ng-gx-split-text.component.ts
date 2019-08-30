@@ -89,8 +89,8 @@ export class NgGxSplitTextComponent implements OnInit, AfterViewInit {
   }
 
   setElements() {
-    this.words = this.splitTextWord.map(word => word.nativeElement);
-    this.chars = this.splitTextChar.map(char => char.nativeElement);
+    this.words = this.splitTextWord.filter((item) => item.nativeElement.innerText !== ' ').map(word => word.nativeElement);
+    this.chars = this.splitTextChar.filter((item) => item.nativeElement.innerText !== ' ').map(char => char.nativeElement);
     this.lineWords = this.getLine(this.words);
     this.lineChars = this.getLine(this.chars);
   }
