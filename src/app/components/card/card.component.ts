@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { TimelineMax } from 'gsap';
-import { NgGxSplitTextDirective } from '../../../../projects/ng-gx-split-text/src/lib/directives/ng-gx-split-text.directive';
+import { NgGxSplitTextDirective } from 'ng-gx-split-text/lib/directives/ng-gx-split-text.directive';
 
 @Component({
   selector: 'app-card',
