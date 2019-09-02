@@ -1,3 +1,5 @@
+![Badge](https://img.shields.io/npm/v/ng-gx-split-text?style=flat-square)
+
 ![GX](https://i.ibb.co/NjW67P4/gx.png)
 
 ![Split Text](https://media.giphy.com/media/MXL08fzkAr19LqhYNT/giphy.gif) 
