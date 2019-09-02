@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Options } from '../../models/options';
 import { fromEvent } from 'rxjs';
 
 @Component({
   selector: 'ng-gx-split-text',
   templateUrl: './ng-gx-split-text.component.html',
-  styleUrls: ['./ng-gx-split-text.component.scss']
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class NgGxSplitTextComponent implements OnInit, AfterViewInit {
