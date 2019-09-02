@@ -24,8 +24,8 @@ You can familiarize yourself with the demo version here - [DEMO](https://geex-ar
 
 
 ## Getting started
-### Step 1: Install `ng-gx-split-text`:
-```shell
+### Step 1: Install `ng-gx-split-text` ([npm](https://www.npmjs.com/package/ng-gx-split-text)):
+```she
 npm install ng-gx-split-text
 ```
 
