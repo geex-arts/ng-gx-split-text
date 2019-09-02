@@ -2,9 +2,9 @@
 
 ![Split Text](https://media.giphy.com/media/MXL08fzkAr19LqhYNT/giphy.gif) 
 
-**NG-GX-SPLIT-TEXT** - This is a utility for Angular, allowing you to split the text into words and chars, for subsequent animation  
+**NG-GX-SPLIT-TEXT** - This is an Angular utility to split text into words, lines or chars for subsequent animations.  
   
-You can familiarize yourself with the demo version at the link - [DEMO](https://geex-arts.github.io/ng-gx-split-text/demo/)  
+You can familiarize yourself with the demo version here - [DEMO](https://geex-arts.github.io/ng-gx-split-text/demo/)  
   
 ## Versions  
 | Angular        | ng-gx-split-text |  
@@ -26,7 +26,7 @@ You can familiarize yourself with the demo version at the link - [DEMO](https://
 npm install ng-gx-split-text
 ```
 
-### Step 2: Import the NgGxSplitTextModule:
+### Step 2: Import NgGxSplitTextModule:
 ```js
 import { NgGxSplitTextModule } from 'ng-gx-split-text';
 
@@ -42,19 +42,19 @@ import { NgGxSplitTextModule } from 'ng-gx-split-text';
 export class AppModule {}
 ```
 
-### Step 3: Add a directive and template variable (example: #text) to the text you want to split:
+### Step 3: Add directive to HTML node you want to split and template ID to reference this Directive in Component (example: #text):
 ```html
 <p #text ngGxSplitText>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus amet consequuntur culpa
   delectus, doloribus exercitationem ipsam, laudantium molestiae non numquam odit omnis optio praesentium quae ratione
   similique sit soluta voluptatem?</p>
 ```
 
-### Step 3: Find template variable in your component using @ViewChild():
+### Step 4: Add @ViewChild to access node words, lines and chars by previously assigned ID:
 ```js
-  @ViewChild('text', {static: true, read: NgGxSplitTextDirective}) text: NgGxSplitTextDirective;
+  @ViewChild('text', { static: true, read: NgGxSplitTextDirective }) text: NgGxSplitTextDirective;
 ```
 
-### Step 4: Animate text with [GSAP](https://greensock.com/gsap/):
+### Step 5: Work with split text using @ViewChild (Example for [GSAP](https://greensock.com/gsap/)):
 ```js
 export class AppComponent implements AfterViewInit {
   
@@ -100,8 +100,8 @@ export class AppComponent implements AfterViewInit {
 ### Directives
 | Name           |  Description |
 | ------------- | ------------- |
-| NgGxSplitText | Add Split Text for your text (all `options` is default) |
-| [NgGxSplitText] | Add Split Text for your text (custom `options`)|
+| NgGxSplitText | Split your text (all `options` is default) |
+| [NgGxSplitText] | Split your text (custom `options`)|
 
 ### Options
 | Name           | Type | Default | Description |
@@ -117,12 +117,12 @@ export class AppComponent implements AfterViewInit {
 ### Properties
 | Name           | Type   | Description |
 | ------------- | ------------- | ------------- |
-| isInit | `boolean`| Return init status  |
-| nativeElement | `HTMLElement` | Return nativeElement |
-| words | `HTMLElement[]` | Return words array |
-| chars | `HTMLElement[]` | Return chars array |
-| line-words | `HTMLElement[][]` | Return line array with words array |
-| line-chars | `HTMLElement[][]` | Return line array with chars array |
+| isInit | `boolean`| Is Split Text applied  |
+| nativeElement | `HTMLElement` | Container HTMLElement |
+| words | `HTMLElement[]` | Words HTMLElement array |
+| chars | `HTMLElement[]` | Chars HTMLElement array |
+| line-words | `HTMLElement[][]` | Line array with words HTMLElement array |
+| line-chars | `HTMLElement[][]` | Line array with chars HTMLElement array |
 
 #### Example: 
 ```js
@@ -133,7 +133,7 @@ this.text.srcText // console.log(Lorem ipsum dolor...);
 ### Methods
 | Name           | Description |
 | ------------- | ------------- |
-| initSplit() |  Initialize Split Text (It will work if you select `defer: true`) |
+| initSplit() |  Initialize Split Text (For using in case `defer: true`) |
 | resetSplit() |  Reset to source text |
 
 #### Example:
