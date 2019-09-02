@@ -9,7 +9,7 @@ You can familiarize yourself with the demo version here - [DEMO](https://geex-ar
 ## Versions  
 | Angular        | ng-gx-split-text |  
 |----------------|------------------|  
-|>=8.0.0  <9.0.0 | v0.0.1           |
+|>=8.0.0  <9.0.0 | v0.0.x           |
 
 ## Features
 
