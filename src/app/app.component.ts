@@ -86,44 +86,59 @@ export class AppComponent implements AfterViewInit {
     const tlText = this.cardComponent.toArray()[2].tlText;
     const multiply = 0.65;
 
-
     text.lineChars.forEach((chars, index) => {
       tlText
-        .add(
-          new TimelineMax()
-            .staggerFrom(chars, 0.8 * multiply, {
-              opacity: 0,
-              x: 10,
-              y: 30,
-              rotation: -10,
-              skewX: 30,
-              ease: Back.easeOut.config(5),
-            }, 0.025 * multiply, '+=0'),
-          index * 0.1 * Math.pow(1.1, (index + 1)) * multiply
-        ).pause();
+        .to(chars, 0.5, {
+          opacity: 0
+        }, 0)
+        .staggerFromTo(chars, 0.8 * multiply, {
+          opacity: 0,
+          x: 10,
+          y: 30,
+          rotation: -10,
+          skewX: 30
+        }, {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          rotation: 0,
+          skewX: 0,
+          immediateRender: false,
+          ease: Back.easeOut.config(5)
+        }, 0.025 * multiply, 0.5 + index * 0.1 * Math.pow(1.1, (index + 1)) * multiply);
     });
+
+    tlText
+      .pause();
   }
 
   textFourInitAnimation() {
     const text = this.cardComponent.toArray()[3].text;
     const tlText = this.cardComponent.toArray()[3].tlText;
     const multiply = 2;
-
-
+    
     text.lineWords.forEach((words, index) => {
       tlText
-        .add(
-          new TimelineMax()
-            .from(words, 0.8 * multiply, {
-              opacity: 0,
-              x: 130,
-              y: 0,
-              skewX: -20,
-              ease: Back.easeOut.config(5),
-            }, 0.025 * multiply),
-          index * 0.1 * Math.pow(0.9, (index + 1)) * multiply
-        ).pause();
+        .to(words, 0.5, {
+          opacity: 0
+        }, 0)
+        .staggerFromTo(words, 0.8 * multiply, {
+          opacity: 0,
+          x: 130,
+          y: 0,
+          skewX: -20
+        }, {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          skewX: 0,
+          immediateRender: false,
+          ease: Back.easeOut.config(5)
+        }, 0.025 * multiply, 0.5 + index * 0.1 * Math.pow(0.9, (index + 1)) * multiply);
     });
+
+    tlText
+      .pause();
   }
 
 
