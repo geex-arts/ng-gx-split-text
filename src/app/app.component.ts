@@ -3,7 +3,6 @@ import { Back } from 'gsap';
 import { cards } from './stubs/cards';
 import * as _ from 'lodash';
 import { CardComponent } from './components/card/card.component';
-import { TimelineMax } from 'gsap';
 
 @Component({
   selector: 'app-root',
@@ -28,6 +27,7 @@ export class AppComponent implements AfterViewInit {
     this.textTwoInitAnimation();
     this.textThreeInitAnimation();
     this.textFourInitAnimation();
+    this.textFiveInitAnimation();
   }
 
   textOneInitAnimation() {
@@ -116,7 +116,7 @@ export class AppComponent implements AfterViewInit {
     const text = this.cardComponent.toArray()[3].text;
     const tlText = this.cardComponent.toArray()[3].tlText;
     const multiply = 2;
-    
+
     text.lineWords.forEach((words, index) => {
       tlText
         .to(words, 0.5, {
@@ -135,6 +135,37 @@ export class AppComponent implements AfterViewInit {
           immediateRender: false,
           ease: Back.easeOut.config(5)
         }, 0.025 * multiply, 0.5 + index * 0.1 * Math.pow(0.9, (index + 1)) * multiply);
+    });
+
+    tlText
+      .pause();
+  }
+
+  textFiveInitAnimation() {
+    const text = this.cardComponent.toArray()[4].text;
+    const tlText = this.cardComponent.toArray()[4].tlText;
+    const multiply = 0.65;
+
+    text.lineChars.forEach((chars, index) => {
+      tlText
+        .to(chars, 0.5, {
+          opacity: 0
+        }, 0)
+        .staggerFromTo(chars, 0.8 * multiply, {
+          opacity: 0,
+          x: 10,
+          y: 30,
+          rotation: -10,
+          skewX: 30
+        }, {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          rotation: 0,
+          skewX: 0,
+          immediateRender: false,
+          ease: Back.easeOut.config(5)
+        }, 0.025 * multiply, 0.5 + index * 0.1 * Math.pow(1.1, (index + 1)) * multiply);
     });
 
     tlText

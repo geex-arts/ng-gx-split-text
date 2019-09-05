@@ -18,7 +18,9 @@
      [class.split-text__text_left]="currentAlignIndex === 0"
      [class.split-text__text_center]="currentAlignIndex === 1"
      [class.split-text__text_right]="currentAlignIndex === 2"
-     [class.split-text__text_justify]="currentAlignIndex === 3" ngGxSplitText>{{cardText}}</p>
+     [class.split-text__text_justify]="currentAlignIndex === 3"
+     [innerHTML]="cardText"
+     ngGxSplitText></p>
   <div class="split-text__controls">
     <div class="split-text__buttons">
       <button class="split-text__btn split-text__btn_play"
