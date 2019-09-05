@@ -52,7 +52,7 @@ export class NgGxSplitTextDirective implements OnInit, AfterViewInit, AfterConte
   }
 
   private createSplitTextComponent(textContent) {
-    this.el.nativeElement.innerHTML = '';
+    // this.el.nativeElement.innerHTML = '';
 
     const factory = this.componentFactoryResolver.resolveComponentFactory(NgGxSplitTextComponent);
     const componentRef = this.viewContainerRef.createComponent(factory);
@@ -60,6 +60,7 @@ export class NgGxSplitTextDirective implements OnInit, AfterViewInit, AfterConte
     this.renderer.appendChild(this.el.nativeElement, componentRef.location.nativeElement);
 
     componentRef.instance.textContent = textContent;
+    componentRef.instance.el = this.el.nativeElement;
     componentRef.instance.options = this.currentOptions;
     componentRef.changeDetectorRef.detectChanges();
 
