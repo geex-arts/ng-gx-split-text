@@ -10,9 +10,8 @@ import { fromEvent } from 'rxjs';
 
 export class NgGxSplitTextComponent implements OnInit, AfterViewInit {
   @Input() textContent: string;
+  @Input() el: HTMLElement;
   @Input() options: Options;
-
-  // willChange: string;
   wordsOfChars: string[][];
 
   @ViewChildren('split_text_word') splitTextWord = new QueryList<ElementRef<HTMLElement>>();
@@ -23,12 +22,32 @@ export class NgGxSplitTextComponent implements OnInit, AfterViewInit {
   lineWords: HTMLElement[] = [];
   lineChars: HTMLElement[] = [];
 
+  wordsArray: HTMLElement[][] = [];
+  nodes = [];
+
+  nodeTypes = {
+    ELEMENT_NODE: 1,
+    ATTRIBUTE_NODE: 2,
+    TEXT_NODE: 3,
+    CDATA_SECTION_NODE: 4,
+    ENTITY_REFERENCE_NODE: 5,
+    ENTITY_NODE: 6,
+    PROCESSING_INSTRUCTION_NODE: 7,
+    COMMENT_NODE: 8,
+    DOCUMENT_NODE: 9,
+    DOCUMENT_TYPE_NODE: 10,
+    DOCUMENT_FRAGMENT_NODE: 11,
+    NOTATION_NODE: 12
+  };
+
+
   constructor() {
   }
 
   ngOnInit(): void {
-    // this.willChange = this.options.willChange.join(', ');
-    this.wordsOfChars = this.createTextArray(this.textContent);
+    this.splitNodes(this.el);
+    this.initNewNodes();
+
   }
 
   ngAfterViewInit(): void {
@@ -36,9 +55,63 @@ export class NgGxSplitTextComponent implements OnInit, AfterViewInit {
     this.updateOnResize();
   }
 
-  createTextArray(textContent: string): string[][] {
+  splitNodes(el) {
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < el.childNodes.length; i++) {
+      const node = el.childNodes[i];
+      const tag = [this.nodeTypes.ELEMENT_NODE, this.nodeTypes.DOCUMENT_NODE, this.nodeTypes.DOCUMENT_FRAGMENT_NODE];
+      const text = [this.nodeTypes.TEXT_NODE, this.nodeTypes.CDATA_SECTION_NODE];
 
-    const words = textContent.split(' ');
+      if (tag.some((item) => item === node.nodeType)) {
+        this.splitNodes(node);
+      } else if (text.some((item) => item === node.nodeType)) {
+        const words = this.splitNodesIntoWords(node);
+
+        const wordsArray = [];
+        words.forEach(chars => {
+          const wordSpan = document.createElement('span');
+          wordSpan.classList.add('split-text-word');
+          wordSpan.style.display = 'inline-block';
+
+          chars.forEach(char => {
+            const charSpan = document.createElement('span');
+            charSpan.classList.add('split-text-char');
+            charSpan.style.display = 'inherit';
+            charSpan.innerHTML = char;
+            wordSpan.appendChild(charSpan);
+            this.chars.push(charSpan);
+          });
+          wordsArray.push(wordSpan);
+          this.words.push(wordSpan);
+        });
+        this.wordsArray.push(wordsArray);
+        this.nodes.push(node);
+      }
+    }
+  }
+
+  initNewNodes() {
+    this.nodes.forEach((node, index) => {
+      this.wordsArray[index].forEach((word, idx) => {
+
+        node.parentNode.insertBefore(word, node);
+
+        const spaceSpan = document.createElement('span');
+        spaceSpan.classList.add('split-text-space');
+        spaceSpan.style.display = 'inline';
+        spaceSpan.innerHTML = ' ';
+
+        node.parentNode.insertBefore(spaceSpan, word.nextSibling);
+
+        if (idx === this.wordsArray[index].length - 1) {
+          node.remove();
+        }
+      });
+    });
+  }
+
+  splitNodesIntoWords(word) {
+    const words = word.textContent.split(' ');
 
     if (words[0] === '') {
       words.splice(0, 1);
@@ -48,12 +121,9 @@ export class NgGxSplitTextComponent implements OnInit, AfterViewInit {
       words.splice(words.length - 1, 1);
     }
 
-    const textWithSpaces = words
-      .map(item => [item, ' '])
-      .reduce((a, b) => a.concat(b), [])
-      .slice(0, -1);
-    return textWithSpaces.map(item => item.split(''));
+    return words.map(item => item.split(''));
   }
+
 
   getLine(elements) {
     const lineElements = [];
@@ -89,8 +159,6 @@ export class NgGxSplitTextComponent implements OnInit, AfterViewInit {
   }
 
   setElements() {
-    this.words = this.splitTextWord.filter((item) => item.nativeElement.innerText !== ' ').map(word => word.nativeElement);
-    this.chars = this.splitTextChar.filter((item) => item.nativeElement.innerText !== ' ').map(char => char.nativeElement);
     this.lineWords = this.getLine(this.words);
     this.lineChars = this.getLine(this.chars);
   }
