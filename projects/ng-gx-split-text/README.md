@@ -1,4 +1,4 @@
-![Badge](https://img.shields.io/npm/v/ng-gx-split-text?style=flat-square)
+[![Badge](https://img.shields.io/npm/v/ng-gx-split-text?style=flat-square)](https://www.npmjs.com/package/ng-gx-split-text)
 ![Badge](https://img.shields.io/npm/l/ng-gx-split-text?style=flat-square)
 
 ![GX](https://i.ibb.co/NjW67P4/gx.png)
