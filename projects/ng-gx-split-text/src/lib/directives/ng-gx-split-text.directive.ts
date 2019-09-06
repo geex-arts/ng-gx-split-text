@@ -43,7 +43,7 @@ export class NgGxSplitTextDirective implements OnInit, AfterViewInit {
   }
 
   private saveSrcText() {
-    this.srcTextContent = this.el.nativeElement.textContent;
+    this.srcTextContent = this.el.nativeElement.innerHTML;
   }
 
   public get words() {
