@@ -1,40 +1,35 @@
-import { AfterContentChecked, AfterViewInit, ComponentFactoryResolver, ComponentRef, Directive, ElementRef, Input, OnInit, Renderer2, ViewContainerRef } from '@angular/core';
-import { NgGxSplitTextComponent } from '../components/ng-gx-split-text/ng-gx-split-text.component';
+import { AfterViewInit, Directive, ElementRef, Input, OnInit } from '@angular/core';
 import { defaults } from '../utils/defaults/defaults';
 import { Options } from '../models/options';
 import { defaultOptions } from '../models/default-options';
+import { SplitNodes } from '../utils/split-nodes/split-nodes';
 
 @Directive({
   selector: '[ngGxSplitText], ngGxSplitText'
 })
 
-export class NgGxSplitTextDirective implements OnInit, AfterViewInit, AfterContentChecked {
+export class NgGxSplitTextDirective implements OnInit, AfterViewInit {
   @Input('ngGxSplitText') options: Options;
 
   private srcTextContent: string;
   private init = false;
-  private componentRef: ComponentRef<NgGxSplitTextComponent>;
   private currentOptions: Options;
+  private splitNodes: SplitNodes;
 
   constructor(
     private el: ElementRef<HTMLElement>,
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private viewContainerRef: ViewContainerRef,
-    private renderer: Renderer2
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.setCurrentOptions();
+    this.initSplitNodes();
   }
 
   ngAfterViewInit(): void {
     if (!this.currentOptions.defer) {
       this.initSplit();
     }
-  }
-
-  ngAfterContentChecked(): void {
-    // TODO: add structure directive
   }
 
   public initSplit() {
@@ -44,55 +39,27 @@ export class NgGxSplitTextDirective implements OnInit, AfterViewInit, AfterConte
     }
     this.init = true;
     this.saveSrcText();
-    this.createSplitTextComponent(this.el.nativeElement.textContent);
+    this.splitNodes.initSplitNodes();
   }
 
   private saveSrcText() {
     this.srcTextContent = this.el.nativeElement.textContent;
   }
 
-  private createSplitTextComponent(textContent) {
-    // this.el.nativeElement.innerHTML = '';
-
-    const factory = this.componentFactoryResolver.resolveComponentFactory(NgGxSplitTextComponent);
-    const componentRef = this.viewContainerRef.createComponent(factory);
-
-    this.renderer.appendChild(this.el.nativeElement, componentRef.location.nativeElement);
-
-    componentRef.instance.textContent = textContent;
-    componentRef.instance.el = this.el.nativeElement;
-    componentRef.instance.options = this.currentOptions;
-    componentRef.changeDetectorRef.detectChanges();
-
-    this.componentRef = componentRef;
-  }
-
   public get words() {
-    if (!this.componentRef) {
-      return;
-    }
-    return this.componentRef.instance.words;
+    return this.splitNodes.words;
   }
 
   public get lineWords() {
-    if (!this.componentRef) {
-      return;
-    }
-    return this.componentRef.instance.lineWords;
+    return this.splitNodes.lineWords;
   }
 
   public get chars() {
-    if (!this.componentRef) {
-      return;
-    }
-    return this.componentRef.instance.chars;
+    return this.splitNodes.chars;
   }
 
   public get lineChars() {
-    if (!this.componentRef) {
-      return;
-    }
-    return this.componentRef.instance.lineChars;
+    return this.splitNodes.lineChars;
   }
 
   public get nativeElement() {
@@ -108,21 +75,14 @@ export class NgGxSplitTextDirective implements OnInit, AfterViewInit, AfterConte
   }
 
   public resetSplit() {
-    if (!this.componentRef) {
-      return;
-    }
     this.nativeElement.innerHTML = this.srcText;
   }
 
-  // public resetWillChange() {
-  //   if (!this.componentRef) {
-  //     return;
-  //   }
-  //   this.words.forEach(word => word.style.willChange = 'auto');
-  //   this.chars.forEach(char => char.style.willChange = 'auto');
-  // }
-
-  setCurrentOptions() {
+  private setCurrentOptions() {
     this.currentOptions = defaults(this.options, defaultOptions);
+  }
+
+  private initSplitNodes() {
+    this.splitNodes = new SplitNodes(this.el.nativeElement.textContent, this.el.nativeElement);
   }
 }

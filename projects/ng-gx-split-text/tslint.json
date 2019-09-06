@@ -3,6 +3,7 @@
   "rules": {
     "max-line-length": false,
     "no-trailing-whitespace": false,
+    "prefer-for-of": false,
     "directive-selector": [
       true,
       "attribute",
