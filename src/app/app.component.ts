@@ -27,7 +27,6 @@ export class AppComponent implements AfterViewInit {
     this.textTwoInitAnimation();
     this.textThreeInitAnimation();
     this.textFourInitAnimation();
-    this.textFiveInitAnimation();
   }
 
   textOneInitAnimation() {
@@ -140,37 +139,4 @@ export class AppComponent implements AfterViewInit {
     tlText
       .pause();
   }
-
-  textFiveInitAnimation() {
-    const text = this.cardComponent.toArray()[4].text;
-    const tlText = this.cardComponent.toArray()[4].tlText;
-    const multiply = 0.65;
-
-    text.lineChars.forEach((chars, index) => {
-      tlText
-        .to(chars, 0.5, {
-          opacity: 0
-        }, 0)
-        .staggerFromTo(chars, 0.8 * multiply, {
-          opacity: 0,
-          x: 10,
-          y: 30,
-          rotation: -10,
-          skewX: 30
-        }, {
-          opacity: 1,
-          x: 0,
-          y: 0,
-          rotation: 0,
-          skewX: 0,
-          immediateRender: false,
-          ease: Back.easeOut.config(5)
-        }, 0.025 * multiply, 0.5 + index * 0.1 * Math.pow(1.1, (index + 1)) * multiply);
-    });
-
-    tlText
-      .pause();
-  }
-
-
 }
