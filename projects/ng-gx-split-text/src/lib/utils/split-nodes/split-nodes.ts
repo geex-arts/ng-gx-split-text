@@ -55,11 +55,13 @@ export class SplitNodes {
           const wordSpan = document.createElement('span');
           wordSpan.classList.add('split-text-word');
           wordSpan.style.display = 'inline-block';
+          wordSpan.style.textIndent = '0';
 
           chars.forEach(char => {
             const charSpan = document.createElement('span');
             charSpan.classList.add('split-text-char');
             charSpan.style.display = 'inherit';
+            charSpan.style.textIndent = '0';
             charSpan.innerHTML = char;
             wordSpan.appendChild(charSpan);
             this.chars.push(charSpan);
