@@ -1,6 +1,6 @@
 {
   "name": "ng-gx-split-text-demo",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "This is a utility for Angular, allowing you to split the text into words and chars, for subsequent animation",
   "author": {
     "name": "Yan Merkushin",

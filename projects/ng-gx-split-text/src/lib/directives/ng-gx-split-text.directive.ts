@@ -9,7 +9,7 @@ import { SplitNodes } from '../utils/split-nodes/split-nodes';
 })
 
 export class NgGxSplitTextDirective implements OnInit, AfterViewInit {
-  @Input('ngGxSplitText') options: Options;
+  @Input('splitOptions') options: Options = defaultOptions;
 
   private srcTextContent: string;
   private init = false;
