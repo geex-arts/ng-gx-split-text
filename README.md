@@ -104,17 +104,19 @@ export class AppComponent implements AfterViewInit {
 | Name           |  Description |
 | ------------- | ------------- |
 | NgGxSplitText | Split your text (all `options` is default) |
-| [NgGxSplitText] | Split your text (custom `options`)|
+| [splitOptions] | Split your text (custom `options`)|
 
 ### Options
 | Name           | Type | Default | Description |
 | ------------- | ------------- | ------------- | ------------- |
 | defer | `boolean` | `false` |  Defer initiation (for manual initiation use `initSplit()`) |
+| mask | `boolean` | `false` |  Add mask/wrap (overflow: hidden) for words|
+| onlyWords | `boolean` | `false` |  Split only words without chars |
 
 #### Example:
 ```html
 <p #text ngGxSplitText>Lorem ipsum dolor...</p> // Default options
-<p #text [ngGxSplitText]="{defer: true, ...}">Lorem ipsum dolor...</p> // Custom options
+<p #text ngGxSplitText [splitOptions]="{defer: true, ...}">Lorem ipsum dolor...</p> // Custom options
 ```
 
 ### Properties
