@@ -1,10 +1,10 @@
 {
   "name": "ng-gx-split-text",
   "description": "This is a utility for Angular, allowing you to split the text into words and chars, for subsequent animation",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": {
     "name": "Yan Merkushin",
-    "email": "MerkushinYan@gmail.com",
+    "email": "yan.merkushin@icloud.com",
     "url": "https://github.com/Yanduz"
   },
   "contributors": [

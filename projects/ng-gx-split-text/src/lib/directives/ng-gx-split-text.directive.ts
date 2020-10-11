@@ -55,10 +55,18 @@ export class NgGxSplitTextDirective implements OnInit, AfterViewInit {
   }
 
   public get chars() {
+    if (this.options.onlyWords){
+      console.warn('Warning! You chose only words.');
+      return;
+    }
     return this.splitNodes.chars;
   }
 
   public get lineChars() {
+    if (this.options.onlyWords){
+      console.warn('Warning! You chose only words.');
+      return;
+    }
     return this.splitNodes.lineChars;
   }
 
@@ -83,6 +91,6 @@ export class NgGxSplitTextDirective implements OnInit, AfterViewInit {
   }
 
   private initSplitNodes() {
-    this.splitNodes = new SplitNodes(this.el.nativeElement.textContent, this.el.nativeElement);
+    this.splitNodes = new SplitNodes(this.el.nativeElement.textContent, this.el.nativeElement, this.currentOptions);
   }
 }

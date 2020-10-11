@@ -1,10 +1,12 @@
 import { fromEvent } from 'rxjs';
+import { Options } from "../../models/options";
 
 export class SplitNodes {
 
   constructor(
     private textContent: string,
     private el: HTMLElement,
+    private options: Options
   ) {
   }
 
@@ -57,15 +59,19 @@ export class SplitNodes {
           wordSpan.style.display = 'inline-block';
           wordSpan.style.textIndent = '0';
 
-          chars.forEach(char => {
-            const charSpan = document.createElement('span');
-            charSpan.classList.add('split-text-char');
-            charSpan.style.display = 'inherit';
-            charSpan.style.textIndent = '0';
-            charSpan.innerHTML = char;
-            wordSpan.appendChild(charSpan);
-            this.chars.push(charSpan);
-          });
+          if (this.options.onlyWords) {
+            wordSpan.innerHTML = chars.join('');
+          } else {
+            chars.forEach(char => {
+              const charSpan = document.createElement('span');
+              charSpan.classList.add('split-text-char');
+              charSpan.style.display = 'inherit';
+              charSpan.style.textIndent = '0';
+              charSpan.innerHTML = char;
+              wordSpan.appendChild(charSpan);
+              this.chars.push(charSpan);
+            });
+          }
 
           wordsArray.push(wordSpan);
           this.words.push(wordSpan);
@@ -80,15 +86,30 @@ export class SplitNodes {
   initNewNodes() {
     this.nodes.forEach((node, index) => {
       this.wordsArray[index].forEach((word, idx) => {
-
-        node.parentNode.insertBefore(word, node);
+        let maskSpan: HTMLElement;
+        if (this.options.mask) {
+          maskSpan = document.createElement('span');
+          maskSpan.classList.add('split-text-mask');
+          maskSpan.style.display = 'inline-block';
+          maskSpan.style.overflow = 'hidden';
+          maskSpan.style.textIndent = '0';
+          maskSpan.style.verticalAlign = 'top';
+          maskSpan.appendChild(word)
+          node.parentNode.insertBefore(maskSpan, node);
+        } else {
+          node.parentNode.insertBefore(word, node);
+        }
 
         const spaceSpan = document.createElement('span');
         spaceSpan.classList.add('split-text-space');
         spaceSpan.style.display = 'inline';
         spaceSpan.innerHTML = ' ';
 
-        node.parentNode.insertBefore(spaceSpan, word.nextSibling);
+        if (this.options.mask) {
+          node.parentNode.insertBefore(spaceSpan, maskSpan.nextSibling);
+        } else {
+          node.parentNode.insertBefore(spaceSpan, word.nextSibling);
+        }
 
         if (idx === this.wordsArray[index].length - 1) {
           node.remove();
@@ -146,6 +167,8 @@ export class SplitNodes {
 
   setLines() {
     this.lineWords = this.getLines(this.words);
-    this.lineChars = this.getLines(this.chars);
+    if (!this.options.onlyWords) {
+      this.lineChars = this.getLines(this.chars);
+    }
   }
 }
